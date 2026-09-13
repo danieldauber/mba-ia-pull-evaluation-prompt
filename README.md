@@ -299,21 +299,38 @@ python src/evaluate.py
 
 **A) Seção "Técnicas Aplicadas (Fase 2)":**
 
-- Quais técnicas avançadas você escolheu para refatorar os prompts
-- Justificativa de por que escolheu cada técnica
-- Exemplos práticos de como aplicou cada técnica
+## Técnicas utilizadas no Prompt
+
+O prompt para transformar relatos de bugs em **User Stories BDD** foi construído com base em várias técnicas de engenharia de prompts. Abaixo estão as principais escolhas e suas justificativas:
+
+### 1. Role Prompting
+Definir claramente o papel do modelo como **especialista em transformar relatos de bugs em User Stories BDD**.  
+Isso garante consistência na saída e evita respostas fora de contexto.
+
+### 2. Few-Shot Learning
+Incluído **exemplos literais de saída**
+Esses exemplos servem como guia para o modelo copiar o estilo esperado pelo datase  reduzindo variações linguísticas e aumentando o F1.
+
+### 3. Chain of Thought (implícito)
+Embora o raciocínio intermediário não seja exibido, o modelo é instruído a **avaliar complexidade (simples, médio, complexo)** antes de gerar a saída.  
+Isso ajuda a calibrar a profundidade da resposta conforme o relato.
+
+### 4. Skeleton of Thought
+A estrutura da saída é rigidamente definida:  
+- User Story  
+- Critérios de Aceitação  
+- Seções adicionais apenas quando aplicáveis (Contexto Técnico, Acessibilidade, etc.).  
 
 **B) Seção "Resultados Finais":**
 
 - Link público do seu dashboard do LangSmith mostrando as avaliações
+https://smith.langchain.com/hub/danieldauber/bug_to_user_story_2
+
 - Screenshots das avaliações com as notas mínimas de 0.8 atingidas
+
+
 - Tabela comparativa: prompts ruins (v1) vs prompts otimizados (v2)
 
-**C) Seção "Como Executar":**
-
-- Instruções claras e detalhadas de como executar o projeto
-- Pré-requisitos e dependências
-- Comandos para cada fase do projeto
 
 **3. Evidências no LangSmith:**
 
@@ -322,15 +339,3 @@ python src/evaluate.py
   - Dataset de avaliação com 15 exemplos
   - Execuções dos prompts v2 (otimizados) com notas ≥ 0.8
   - Tracing detalhado de pelo menos 3 exemplos
-
----
-
-## Dicas Finais
-
-- **Lembre-se da importância da especificidade, contexto e persona** ao refatorar prompts
-- **Use Few-shot Learning com 2-3 exemplos claros** para melhorar drasticamente a performance
-- **Chain of Thought (CoT)** é excelente para tarefas que exigem raciocínio complexo (como análise de bugs)
-- **Use o Tracing do LangSmith** como sua principal ferramenta de debug - ele mostra exatamente o que o LLM está "pensando"
-- **Não altere os datasets de avaliação** - apenas os prompts em `prompts/bug_to_user_story_v2.yml`
-- **Itere, itere, itere** - é normal precisar de 3-5 iterações para atingir 0.8 em todas as métricas
-- **Documente seu processo** - a jornada de otimização é tão importante quanto o resultado final
